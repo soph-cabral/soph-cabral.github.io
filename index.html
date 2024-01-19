@@ -1,18 +1,38 @@
 ---
 layout: layout
-title: "My 3Depot -- test"
+title: "Scabral"
 ---
 
-<div class="center-container">
-    <h1 class="centered-paragraph">3Depot</h1>
-    <h2 class="centered-paragraph">Your 3D models at your fingertip</h2>
-    <div id="model-container"></div>
+<!-- .container is the main centered wrapper -->
+<div class="container">
+
+    <!-- columns should be the immediate child of a .row -->
+    <div class="row">
+        <div class="twelve columns">
+            <h1>Sophia Cabral</h1>
+            <p>Architecture | Technology | Art</p>
+        </div>
+    </div>
 
     <p class="centered-paragraph">
-        Upload, show, share, explore.🌍
+        Exploring ... 🌍
     </p>
 
-    <img src="{{ site.baseurl }}/static/thumbnail_sphere.jpg" alt="img" class="sphere" >
+        <div class="model-viewer" id="viewer" style="width: 600px; height: 600px;">
+            <model-viewer class="mod" style="width: 100%; height: 100%; max-width: none; max-height: none;"src="{{ site.baseurl }}static/models/Flower_Purple" ar ar-modes="scene-viewer webxr quick-look"
+                shadow-intensity="8" exposure="0.7"
+                camera-orbit="-422.2deg 90deg auto" environment-image="neutral" auto-rotate
+                rotation-per-second="60deg">
+                <!-- Navigation buttons or other content can be placed here -->
+            </model-viewer>
+        </div>
 
-    <button class="btn btn-light"><a href="/register" class="btn btn-light">Register</a></button>
+
+    <!--<img src="{{ site.baseurl }}/static/thumbnail_sphere.jpg" alt="img" class="sphere">-->
+
+
+
+ 
+
+    <button class="btn btn-light"><a href="/register" class="btn btn-light">Portfolio</a></button>
 </div>
