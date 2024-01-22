@@ -19,7 +19,7 @@
     <nav class="bg-light border navbar navbar-light">
         <div class="container-fluid">
             <!-- Brand -->
-            <h3 class="black-and-white" href="/index">🏠</h3>
+            <a class="black-and-white" href="/index"><h3>🏠</h3></a>
 
             <!-- Navigation links directly in the navbar -->
             <ul class="navbar-nav ms-auto mt-2 d-flex flex-row">
@@ -48,25 +48,35 @@
     </div>
 
     <p class="centered-paragraph">
-        Exploring ... 🌍
+        Tech-centered design start-up
     </p>
  
-    <div class="model-viewer mx-auto" id="viewer" style="width: 600px; height: 600px;">
-        <picture>
-            <!-- Show GIF for screens smaller than 769px -->
-            <source media="(max-width: 768px)" srcset="static/imgs/concrete/9.jpg">
-            <!-- Show 3D model for larger screens -->
-            <model-viewer class="mod"
-                style="width: 100%; height: 100%; max-width: none; max-height: none; @media (min-width: 769px) and (max-width: 1200px) { width: 80%; height: auto; }"
-                src="static/models/Flower_Purple"
-                ar ar-modes="scene-viewer webxr quick-look"
-                shadow-intensity="8" exposure="0.7"
-                camera-orbit="-422.2deg 90deg auto" environment-image="neutral" auto-rotate
-                rotation-per-second="60deg">
-                <!-- Navigation buttons or other content can be placed here -->
-            </model-viewer>
-        </picture>
+    <div class="model-viewer" id="viewer" style="width: 600px; height: 600px;">
+        <model-viewer class="mod" style="width: 100%; height: 100%; max-width: none; max-height: none;" src="static/models/Flower_Purple" ar ar-modes="scene-viewer webxr quick-look"
+            shadow-intensity="8" exposure="0.7"
+            camera-orbit="-422.2deg 90deg auto" environment-image="neutral" auto-rotate
+            rotation-per-second="60deg">
+            <!-- Navigation buttons or other content can be placed here -->
+        </model-viewer>
     </div>
+    
+    <script>
+        // Function to adjust model-viewer size based on screen width
+        function adjustViewerSize() {
+            var viewer = document.getElementById('viewer');
+            if (window.innerWidth <= 768) {
+                viewer.style.width = '100%';
+                viewer.style.height = 'auto';
+            } else {
+                viewer.style.width = '600px';
+                viewer.style.height = '600px';
+            }
+        }
+    
+        // Adjust size on page load and window resize
+        window.addEventListener('load', adjustViewerSize);
+        window.addEventListener('resize', adjustViewerSize);
+    </script>
  
     
 
