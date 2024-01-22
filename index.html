@@ -21,25 +21,17 @@ title: "Scabral"
         Exploring ... 🌍
     </p>
     <div class="model-viewer" id="viewer" style="width: 600px; height: 600px;">
-        <model-viewer class="mod" style="width: 100%; height: 100%; max-width: none; max-height: none;" src="{{ site.baseurl }}static/models/Flower_Purple" ar ar-modes="scene-viewer webxr quick-look"
-            shadow-intensity="8" exposure="0.7"
-            camera-orbit="-422.2deg 90deg auto" environment-image="neutral" auto-rotate
-            rotation-per-second="60deg">
-            <!-- Navigation buttons or other content can be placed here -->
-        </model-viewer>
+        <model-viewer class="mod"
+        style="width: 100%; height: 100%; max-width: none; max-height: none; @media (min-width: 769px) and (max-width: 1200px) { width: 80%; height: auto; }"
+        src="{{ site.baseurl }}static/models/Flower_Purple"
+        ar ar-modes="scene-viewer webxr quick-look"
+        shadow-intensity="8" exposure="0.7"
+        camera-orbit="-422.2deg 90deg auto" environment-image="neutral" auto-rotate
+        rotation-per-second="60deg">
+        <!-- Navigation buttons or other content can be placed here -->
+    </model-viewer>
     </div>
     
-    <style>
-        @media (min-width: 769px) and (max-width: 1200px) {
-            .responsive-model {
-                /* Your styles for this range */
-                width: 80%;
-                height: auto;
-                max-width: none;
-                max-height: none;
-            }
-        }
-    </style>
 
 
     <button class="btn btn-light"><a href="/cinzalua" class="btn btn-light">Professional Work</a></button>
