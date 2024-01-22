@@ -21,7 +21,11 @@ title: "Scabral"
         Exploring ... 🌍
     </p>
  
-        <div class="model-viewer mx-auto" id="viewer" style="width: 600px; height: 600px;">
+    <div class="model-viewer mx-auto" id="viewer" style="width: 600px; height: 600px;">
+        <picture>
+            <!-- Show GIF for screens smaller than 769px -->
+            <source media="(max-width: 768px)" srcset="static/imgs/concrete/9.jpg">
+            <!-- Show 3D model for larger screens -->
             <model-viewer class="mod"
                 style="width: 100%; height: 100%; max-width: none; max-height: none; @media (min-width: 769px) and (max-width: 1200px) { width: 80%; height: auto; }"
                 src="{{ site.baseurl }}static/models/Flower_Purple"
@@ -31,7 +35,8 @@ title: "Scabral"
                 rotation-per-second="60deg">
                 <!-- Navigation buttons or other content can be placed here -->
             </model-viewer>
-        </div>
+        </picture>
+    </div>
  
     
 
