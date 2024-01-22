@@ -59,25 +59,16 @@
         </model-viewer>
     </div>
     
-    <script>
-        // Adjust model-viewer size based on screen width
-        window.addEventListener('resize', function() {
-            var viewer = document.getElementById('viewer');
-            if (window.innerWidth <= 768) {
-                viewer.style.width = '100%';
-                viewer.style.height = 'auto';
-            } else {
-                viewer.style.width = '600px';
-                viewer.style.height = '600px';
+
+    <style>
+        @media (max-width: 768px) {
+            #viewer {
+                width: 100%;
+                height: auto;
             }
-        });
-    
-        // Initial adjustment on page load
-        window.dispatchEvent(new Event('resize'));
-    </script>
+        }
+    </style>
 
-
-    <!--<img src="/static/thumbnail_sphere.jpg" alt="img" class="sphere">-->
 
     <button class="btn btn-light"><a href="/cinzalua" class="btn btn-light">Professional Work</a></button>
     <button class="btn btn-light"><a href="www.sophiacabral.com" class="btn btn-light">Personal/Acdemic Work</a></button>
