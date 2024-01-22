@@ -422,16 +422,4 @@ there.
   filter: grayscale(100%);
 }
 
-.model-viewer {
-  width: 600px;
-  height: 600px;
-}
 
-@media (max-width: 768px) {
-  .model-viewer {
-      width: 100%;
-      height: auto; /* Adjust the height based on the aspect ratio of your model */
-      max-width: none;
-      max-height: none;
-  }
-}
