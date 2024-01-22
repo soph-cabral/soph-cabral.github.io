@@ -15,28 +15,22 @@
 
 
     <title>Scabral</title>
-</head>
-<body>
-    <nav class="bg-light border navbar navbar-expand-md navbar-light">
+
+    <nav class="bg-light border navbar navbar-light">
         <div class="container-fluid">
             <!-- Brand -->
-            <h5 class="black-and-white" href="/index.html">...🏠</h5>
+            <h3 class="black-and-white" href="/index">🏠</h3>
 
-            <!-- Toggler button for small screens -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Navigation links -->
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="navbar-nav ms-md-auto mt-2">
-                    <li class="nav-item"><a class="nav-link" href="/cinzalua">CinzaLua LLC</a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://www.sophiacabral.com">Sophia Cabral</a></li>
-                </ul>   
-            </div>
+            <!-- Navigation links directly in the navbar -->
+            <ul class="navbar-nav ms-auto mt-2 d-flex flex-row">
+                <li class="nav-item me-5"><a class="nav-link" href="/cinzalua">CinzaLua LLC</a></li>
+                <li class="nav-item me-5"><a class="nav-link" href="https://www.sophiacabral.com">Sophia Cabral</a></li>
+            </ul>
         </div>
-    </nav>
+    </div>
 
+</head>
+<body>
 
     <div class="container">
         {{ content }}
