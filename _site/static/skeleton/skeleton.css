@@ -422,6 +422,11 @@ there.
   filter: grayscale(100%);
 }
 
+.model-viewer {
+  width: 600px;
+  height: 600px;
+}
+
 @media (max-width: 768px) {
   .model-viewer {
       width: 100%;
@@ -429,9 +434,4 @@ there.
       max-width: none;
       max-height: none;
   }
-}
-
-.model-viewer {
-  width: 600px;
-  height: 600px;
 }
