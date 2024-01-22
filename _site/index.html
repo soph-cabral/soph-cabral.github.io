@@ -35,18 +35,7 @@
     <div class="container">
         <meta name="viewport" content="initial-scale=1, width=device-width">
 
-    <style>
-        @media (max-width: 768px) {
-            .model-viewer {
-                width: 100%;
-                height: auto; /* Adjust the height based on the aspect ratio of your model */
-                max-width: none;
-                max-height: none;
-                margin: 0 auto;
-            }
-        }
-        /* End of your existing CSS styles */
-    </style>
+
 <!-- .container is the main centered wrapper -->
 <div class="container">
 
@@ -61,15 +50,31 @@
     <p class="centered-paragraph">
         Exploring ... 🌍
     </p>
-
-        <div class="model-viewer" id="viewer" style="width: 600px; height: 600px;">
-            <model-viewer class="mod" style="width: 100%; height: 100%; max-width: none; max-height: none;"src="static/models/Flower_Purple" ar ar-modes="scene-viewer webxr quick-look"
-                shadow-intensity="8" exposure="0.7"
-                camera-orbit="-422.2deg 90deg auto" environment-image="neutral" auto-rotate
-                rotation-per-second="60deg">
-                <!-- Navigation buttons or other content can be placed here -->
-            </model-viewer>
-        </div>
+    <div class="model-viewer" id="viewer" style="width: 600px; height: 600px;">
+        <model-viewer class="mod" style="width: 100%; height: 100%; max-width: none; max-height: none;" src="static/models/Flower_Purple" ar ar-modes="scene-viewer webxr quick-look"
+            shadow-intensity="8" exposure="0.7"
+            camera-orbit="-422.2deg 90deg auto" environment-image="neutral" auto-rotate
+            rotation-per-second="60deg">
+            <!-- Navigation buttons or other content can be placed here -->
+        </model-viewer>
+    </div>
+    
+    <script>
+        // Adjust model-viewer size based on screen width
+        window.addEventListener('resize', function() {
+            var viewer = document.getElementById('viewer');
+            if (window.innerWidth <= 768) {
+                viewer.style.width = '100%';
+                viewer.style.height = 'auto';
+            } else {
+                viewer.style.width = '600px';
+                viewer.style.height = '600px';
+            }
+        });
+    
+        // Initial adjustment on page load
+        window.dispatchEvent(new Event('resize'));
+    </script>
 
 
     <!--<img src="/static/thumbnail_sphere.jpg" alt="img" class="sphere">-->
