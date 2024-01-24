@@ -62,14 +62,11 @@
                 /* Media query for smaller screens (mobile) */
                 @media only screen and (max-width: 600px) {
                     .model-viewer.model {
-                        display: none; /* Hide the 3D model on smaller screens */
-                    }
-    
-                    .model-viewer.photo {
                         display: block; /* Show the photo on smaller screens */
                         width: 100%;
                         max-width: none;
                         max-height: none;
+                        padding: 20px;
                     }
                 }
             </style>
@@ -84,11 +81,7 @@
                 <!-- Navigation buttons or other content can be placed here -->
             </model-viewer>
         </div>
-    
-        <!-- For smaller screens (mobile) -->
-        <div class="model-viewer photo">
-            <img src="static/imgs/flowe4-03.png" alt="Photo">
-        </div>
+
     </div>
    
  
