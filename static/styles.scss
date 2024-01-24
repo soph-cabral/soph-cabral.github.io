@@ -1,25 +1,20 @@
 
-nav .navbar-brand {
-    font-size: xx-large;
+.navbar {
+    background-color: white; /* Set the background color to white */
 }
 
-/* Colors for brand */
-nav .navbar-brand .blue
-{
-    color: #537fbe;
+.navbar-brand-box {
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
 }
-nav .navbar-brand .red
-{
-    color: #ea433b;
+
+/* Style for the brand image */
+.navbar-brand-box img {
+    width: 100%;
+    height: 100%;
 }
-nav .navbar-brand .yellow
-{
-    color: #f5b82e;
-}
-nav .navbar-brand .green
-{
-    color: #2e944b;
-}
+
 
 
 .custom-button {
