@@ -4,57 +4,74 @@ title: "Scabral"
 ---
 
 <!-- .container is the main centered wrapper -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/css/lightbox.min.css">
+
+<!-- .container is the main centered wrapper -->
+<style>
+  .item {
+  height: 400px; /* Adjust the height as needed */
+  overflow: hidden; /* Hide any content that exceeds the fixed height */
+}
+
+/* Ensure the images cover the entire container while maintaining aspect ratio */
+.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+</style>
+
+<body>
 <div class="container">
 
     <!-- columns should be the immediate child of a .row -->
     <div class="row">
         <div class="twelve columns">
-            <h3>Clafoutis Sonata</h3>
-            <p>Installation in Miami's historic mansion</p>
-        </div>
+            <h3>Wooden wall tiles</h3>
+            <p>
+              72 wood pieces comissioned by ECHO Brickell in Miami CNC milled and hand finished 
+            </p>
     </div>
 
-    <p class="centered-paragraph">
-      MIAMI – A newly commissioned work is on view at Vizcaya Museum and Gardens from November 1, 2023, to April 29, 2024. Karla Caprali and Sophia Cabral (Caprali and Cinza Lua Studios) have transformed Vizcaya’s historic kitchen with a site-specific multimedia installation. Their work, titled “Vizcaya’s Kitchen and The Clafoutis Sonata,” melds history, storytelling, and animation to create an installation that brings Vizcaya’s historic kitchen to life. The opening reception will take place on Wednesday, November 1, 2023, at 7:00 p.m. and the exhibit will be on view through April 29, 2024. To read more go to : <a href="https://vizcaya.org/posts/capkitchen_pr/">Vizcaya's Page</a>
-    </p>
+    <!-- Carousel wrapper -->
 
-<!-- Carousel wrapper -->
-<body>
-
-    <!-- Minimal Carousel Code -->
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="static/imgs/copper/4.png" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-          <img src="static/imgs/copper/5.png" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="static/imgs/copper/6.png" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="static/imgs/copper/7.png" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="static/imgs/copper/8.png" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="static/imgs/copper/2.png" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="static/imgs/copper/1.png" class="d-block w-100" alt="...">
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
+  <div class="row">
+    <div class = "six columns">
+     
+        <video controls width="80%">
+            <source src="static/imgs/copper/Sophia_Video B(1)_English+Spanish_1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+
+  
+  
+    <div class="six columns">
+
+    <div class="row photos">
+        <div class="col-sm-6 col-md-4 col-lg-3 item"><a href="static/imgs/copper/5.png" data-lightbox="photos"><img class="img-fluid" src="static/imgs/copper/5.png"></a></div>
+        <div class="col-sm-6 col-md-4 col-lg-3 item"><a href="static/imgs/copper/6.png" data-lightbox="photos"><img class="img-fluid" src="static/imgs/copper/6.png"></a></div>
+        <div class="col-sm-6 col-md-4 col-lg-3 item"><a href="static/imgs/copper/7.png" data-lightbox="photos"><img class="img-fluid" src="static/imgs/copper/7.png"></a></div>
+        <div class="col-sm-6 col-md-4 col-lg-3 item"><a href="static/imgs/copper/8.png" data-lightbox="photos"><img class="img-fluid" src="static/imgs/copper/8.png"></a></div>
+        <div class="col-sm-6 col-md-4 col-lg-3 item"><a href="static/imgs/copper/4.png" data-lightbox="photos"><img class="img-fluid" src="static/imgs/copper/4.png"></a></div>
+        <div class="col-sm-6 col-md-4 col-lg-3 item"><a href="static/imgs/copper/3.png" data-lightbox="photos"><img class="img-fluid" src="static/imgs/copper/3.png"></a></div>
+        <div class="col-sm-6 col-md-4 col-lg-3 item"><a href="static/imgs/copper/2.png" data-lightbox="photos"><img class="img-fluid" src="static/imgs/copper/2.png"></a></div>
+        <div class="col-sm-6 col-md-4 col-lg-3 item"><a href="static/imgs/copper/1.png" data-lightbox="photos"><img class="img-fluid" src="static/imgs/copper/1.png"></a></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
+
+  </div>
+</div>
+
+</div>
+
+</body>
+
 </body>

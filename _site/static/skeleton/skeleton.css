@@ -422,4 +422,7 @@ there.
   filter: grayscale(100%);
 }
 
-
+.video-container {
+  max-width: 100%; /* Ensure the video container doesn't exceed the viewport width */
+  margin-top: 20px; /* Adjust as needed */
+}
