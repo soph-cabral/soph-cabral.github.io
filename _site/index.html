@@ -49,34 +49,46 @@
         Tech-centered design start-up
     </p>
  
-    <div class="model-viewer mx-auto" id="viewer">
-        <style>
-            /* Default styles for larger screens (computer) */
-            .model-viewer {
-                width: 600px;
-                height: 600px;
-                padding: 40px; /* Adjust the padding value according to your preference */
-            }
-    
-            /* Media query for smaller screens (mobile) */
-            @media only screen and (max-width: 600px) {
-                .model-viewer {
-                    width: 100%; /* Adjust the padding value here as well */
-                    height: 100%;
-                    max-width: none;
-                    max-height: none;
+    <div class="model-viewer-container mx-auto" id="viewer">
+        <!-- For larger screens (computer) -->
+        <div class="model-viewer model">
+            <style>
+                .model-viewer.model {
+                    width: 600px;
+                    height: 600px;
+                    padding: 20px; /* Adjust the padding value according to your preference */
                 }
-            }
-        </style>
-        <model-viewer class="mod"
-            style="width: 100%; height: 100%; max-width: none; max-height: none;/"
-            src="static/models/Flower_Purple"
-            ar ar-modes="scene-viewer webxr quick-look"
-            shadow-intensity="8" exposure="0.7"
-            camera-orbit="-422.2deg 90deg auto" environment-image="neutral" auto-rotate
-            rotation-per-second="60deg">
-            <!-- Navigation buttons or other content can be placed here -->
-        </model-viewer>
+    
+                /* Media query for smaller screens (mobile) */
+                @media only screen and (max-width: 600px) {
+                    .model-viewer.model {
+                        display: none; /* Hide the 3D model on smaller screens */
+                    }
+    
+                    .model-viewer.photo {
+                        display: block; /* Show the photo on smaller screens */
+                        width: 100%;
+                        max-width: none;
+                        max-height: none;
+                    }
+                }
+            </style>
+    
+            <model-viewer class="mod"
+                style="width: 100%; height: 100%; max-width: none; max-height: none;/"
+                src="static/models/Flower_Purple"
+                ar ar-modes="scene-viewer webxr quick-look"
+                shadow-intensity="8" exposure="0.7"
+                camera-orbit="-422.2deg 90deg auto" environment-image="neutral" auto-rotate
+                rotation-per-second="60deg">
+                <!-- Navigation buttons or other content can be placed here -->
+            </model-viewer>
+        </div>
+    
+        <!-- For smaller screens (mobile) -->
+        <div class="model-viewer photo">
+            <img src="static/imgs/flowe4-03.png" alt="Photo">
+        </div>
     </div>
    
  
