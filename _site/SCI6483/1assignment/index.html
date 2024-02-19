@@ -1,58 +1,110 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <meta charset="utf-8" />
 
-  </head>
-  <body>
-    
-    <script src="sketch.js"></script>
-    <script src="mover.js"></script>
- 
+<head>
+  <title>FLOW</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="css/week3.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script>
 
-    <div class="wrapper" id="app-wrapper-vertical">
-      <div id="app-wrapper-horizontal">
-  
-        <!-- UI section 
-        <fieldset id="sidebar-fieldset">
-          <legend>Controls</legend>
-        </fieldset>
+</head>
 
-         
-        <fieldset id="canvas-fieldset">
-          <legend>Canvas</legend>
-        </fieldset>
-        -->
-        <!-- create a verical menu on the right side of the page with 6 icons-->
-        <div id="menu">
-          <div class="menu-item" id="menu-item-1">
-            <img src="icons/palette.svg" alt="icon1" class="icon">
+<body>
+  <div class="wrapper" id="app-wrapper-vertical">
+    <div id="app-wrapper-horizontal">
+
+      <!-- UI section -->
+      <fieldset id="sidebar-fieldset">
+        <img src="img/space-wave-01.png" id="logo">
+        <legend>Controls</legend>
+
+        
+        <div class="control-stack">
+          <!--
+          <div class="control-container border-bottom">
+            <p class="text-small">Flow mode</p>
+            <select name="shape" class="dropdown" id="shape-selector">
+              <option value="noir">Rectangle</option>
+              <option value="ellipse">Ellipse</option>
+              <option value="line">Line</option>
+              <option value="eraser-rectangle">Eraser: Rectangle</option>
+              <option value="eraser-ellipse">Eraser: Ellipse</option>
+            </select>
+            -->
+            
           </div>
-          <div class="menu-item" id="menu-item-2">
-            <img src="icons/brush.svg" alt="icon2" class="icon">
+          <div class="control-container">
+            <!--hide swatch box-->
+            <div class="color-swatch-stroke" id="color-swatch-stroke"></div>
           </div>
-          <div class="menu-item" id="menu-item-3">
-            <img src="icons/brush.svg" alt="icon3" class="icon">
+          <div class="control-container border-bottom">
+            <p class="text-small">Stroke</p>
+            <div class="slider-container">
+              R <input type="range" min="0" max="255" value="255" class="slider" id="stroke-slider-red">
+              <span id="stroke-value-red">0</span>
+            </div>
+            <div class="slider-container">
+              G <input type="range" min="0" max="255" value="0" class="slider" id="stroke-slider-green">
+              <span id="stroke-value-green">0</span>
+            </div>
+            <div class="slider-container">
+              B <input type="range" min="0" max="255" value="0" class="slider" id="stroke-slider-blue">
+              <span id="stroke-value-blue">0</span>
+            </div>
+            <div class="slider-container">
+              D <input type="range" min="5" max="255" value="10" class="slider" id="stroke-slider-alpha">
+              <span id="stroke-value-alpha">0</span>
+            </div>
+            <div class="slider-container">
+              S <input type="range" min="1" max="8" value="0.5" class="slider" id="stroke-slider-width">
+              <span id="stroke-value-width">0</span>
+            </div>
           </div>
-          <div class="menu-item" id="menu-item-4">
-            <img src="icons/brush.svg" alt="icon4" class="icon">
-          </div>
-          <div class="menu-item" id="menu-item-5">
-            <img src="icons/brush.svg" alt="icon5" class="icon">
-          </div>
-          <div class="menu-item" id="menu-item-6">
-            <img src="icons/help.svg" alt="icon6" class="icon">
-          </div>
-          <div id="slider-container"></div>
+
+        <!--bgm-->
+        <div class="control-container border-bottom">
+          <p class="text-small">Background music</p>
+          <select name="music" class="dropdown" id="music-selector" onchange="updateSelectedMusic()">
+            <option value="music/take-on-me.mp3">Take On Me</option>
+            <option value="music/i-ran.mp3">I Ran</option>
+            <option value="music/Video-Killed-The-Radio-Star.mp3">Video Killed The Radio Star</option>
+          </select>
         </div>
-        <div id="canvas-container"></div>
+        
+        <div class="control-container">
+          <p class="text-small">esc to stop</p>
+          <p class="text-small">tab to resume</p>
+          <p class="text-small">return/enter to reset</p>
+          <p class="text-small">space bar to add a new layer of points</p>
+          <p class="text-small">s to save</p>
+        <div>
         
 
-      </div>
+      </fieldset>
+      <fieldset id="canvas-fieldset">
+        <legend>Canvas</legend>
+
+        <div id="canvas-container"></div>
+
+      </fieldset>
     </div>
-  </body>
+  </div>
+
+
+  <!-- Use full p5.js library when developing locally -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script> -->
+
+  <!-- Switch to minified version when deploying for production/use -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script> -->
+
+  <!-- Optional addons -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script> -->
+
+  <!-- Load the main script at the end of the page, when all the DOM elements are already present -->
+  <script type="text/javascript" src="js/week3-mouse-2-backup-0219.js"></script>
+  <script type="text/javascript" src="js/week3-dom-setup.js"></script>
+
+</body>
+
 </html>
-
-

@@ -1,0 +1,190 @@
+* {
+    /* border: 1px solid coral; */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    /*font color white*/
+    color: white;
+    line-height: 24px;
+    background-color: black;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    background-color: black;
+}
+
+fieldset {
+    margin: 8px;
+    color: #000000;
+    background-color: black;
+    border-color: #000000;
+    border-radius: 5px;
+    border-width: 0px;
+}
+
+img{
+    max-width: 100%;
+    height: auto;
+    
+}
+
+canvas {
+    /* This adds to the w/h of the canvas and triggers window scrollbars */
+    /* border: 1px solid #d3d3d3; */
+
+    /* Trick: border without affecting render size*/
+    /* https://stackoverflow.com/a/13517809/1934487 */
+    -webkit-box-shadow: 0px 0px 0px 0px #000000;
+    -moz-box-shadow: 0px 0px 0px 0px #000000;
+    box-shadow: 0px 0px 0px 0px #000000;
+}
+
+.text-small {
+    font-size: 12px;
+}
+
+#canvas-fieldset {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#canvas-container {
+    flex-grow: 1;
+    color: #444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+}
+
+
+/* Small screens */
+@media all and (min-width: 400px) {
+    /* We tell both divs to share a row */
+
+    #app-wrapper-vertical {
+        display: flex;
+        flex-flow: column;
+    }
+    
+    #app-wrapper-horizontal {
+        flex-grow: 1;
+        display: flex;
+        flex-flow: column;
+    }
+
+    #canvas-fieldset {
+        order: 1;
+        flex-direction: row;
+    }
+
+    #sidebar-fieldset {
+        order: 2;
+    }
+
+    #canvas-container {
+        flex-flow: column;
+        height: 100%;
+    }
+    
+    #canvas-container {
+        min-height: 500px;
+    }
+}
+
+/* Large screens */
+@media all and (min-width: 800px) {
+    #app-wrapper-vertical {
+        min-height: 100%;
+        display: flex;
+        flex-flow: row;
+    }
+    
+    #app-wrapper-horizontal {
+        flex-grow: 1;
+        display: flex;
+        flex-flow: row;
+    }
+
+    #canvas-fieldset {
+        order: 2;
+        flex: 1 100%;
+        flex-direction: row;
+    }
+
+    #sidebar-fieldset {
+        order: 1;
+        flex: 1 0 250px;
+    }
+
+    #canvas-container {
+        min-height: 0;
+    }
+}
+
+.control-stack {
+    display: flex;
+    flex-flow: column;
+}
+
+.control-container {
+    flex: 1;
+    padding-bottom: 10px;
+    margin-bottom: 4px;
+}
+
+.border-bottom {
+    border-bottom: 0px solid #425BB5;
+}
+
+#color-swatch-stroke {
+    height: 0px;
+    border-style: none;
+    border-width: 0px;
+    border-color: #425BB5;
+}
+
+.slider-container {
+    margin: 0 0 2px 0;
+}
+
+/* https://www.w3schools.com/howto/howto_js_rangeslider.asp */
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 125px;
+    height: 6px;
+    background: #425bb58d;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #293d83;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #293d83;
+    cursor: pointer;
+}
+
+.dropdown {
+    margin: 0 0 4px 0;
+}
