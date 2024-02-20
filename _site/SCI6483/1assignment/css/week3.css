@@ -1,17 +1,23 @@
 * {
     /* border: 1px solid coral; */
     font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+    font-size: 10px;
     /*font color white*/
     color: white;
     line-height: 24px;
     background-color: black;
 }
 
+mark {
+    background-color: palevioletred;
+    color: black;
+    }
+
 html, body {
     height: 100%;
     margin: 0;
     background-color: black;
+    
 }
 
 fieldset {
