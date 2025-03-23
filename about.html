@@ -1,0 +1,65 @@
+---
+layout: layout
+title: "Scabral"
+---
+
+<!-- .container is the main centered wrapper -->
+<div class="container">
+
+    <!-- columns should be the immediate child of a .row -->
+    <div class="row">
+        <div class="four columns">
+            <h3>SOPHIA CABRAL</h3>
+        </div>
+        
+        <div class="eight columns">
+            <p>I grew up in the northern part of Brazil on the edge of the Amazon, surrounded by nature in the city of Belém. I am passionate about making cities a place where every species can feel part of the landscape and enjoy it equally. 
+
+                Currently, I am captivated by the concept of "urban habitats" — pockets of space that foster diverse ecological interactions, ultimately enhancing the lives of all species within a city (not just humans). My aspiration is to construct numerous urban habitats, effectively blurring the boundaries between nature and the cityscape </p>
+        </div>
+    </div>
+
+ 
+    <div class="model-viewer-container mx-auto" id="viewer">
+        <!-- For larger screens (computer) -->
+        <div class="model-viewer model">
+            <style>
+                .model-viewer.model {
+                    width: 600px;
+                    height: 600px;
+                    padding: 20px; /* Adjust the padding value according to your preference */
+                }
+    
+                /* Media query for smaller screens (mobile) */
+                @media only screen and (max-width: 600px) {
+                    .model-viewer.model {
+                        display: block; /* Show the photo on smaller screens */
+                        width: 100%;
+                        max-width: none;
+                        max-height: none;
+                        padding: 2px;
+                    }
+                }
+            </style>
+    
+            <model-viewer class="mod"
+                style="width: 100%; height: 100%; max-width: none; max-height: none;/"
+                src="{{ site.baseurl }}static/models/me.glb"
+                ar ar-modes="scene-viewer webxr quick-look"
+                shadow-intensity="7" exposure="0.8"
+                camera-orbit="-1.2deg 90deg auto" environment-image="neutral" auto-rotate
+                rotation-per-second="60deg">
+                <!-- Navigation buttons or other content can be placed here -->
+            </model-viewer>
+        </div>
+
+    </div>
+   
+ 
+    
+
+    <button class="btn btn-light"><a href="https://www.linkedin.com/in/sophia-cabral-106184136/" class="btn btn-light">My LinkedIn</a></button>
+
+
+
+</div>
