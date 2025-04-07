@@ -78,25 +78,15 @@
       max-width: 600px;
       text-align: center;
     }
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-      padding: 10px; /* Larger touch target for close button */
-    }
-    .close:hover,
-    .close:focus {
-      color: black;
-      margin-right: 30px;
-      text-decoration: none;
-    }
     /* Gallery image styling */
     .gallery-img {
       max-width: 100%;
       margin: 10px 0;
     }
+    .close {
+  display: none;
+}
+
   </style>
 </head>
 <body>
@@ -119,6 +109,7 @@
     let hoveredNode = null;
     let lastTouchTime = 0; // Track last touch to prevent double processing
     let isTouchDevice = false;
+    let touchStartPos = null; // To record initial touch position
 
     // Detect if we're on a touch device as early as possible
     if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
@@ -250,8 +241,7 @@
         40,
         `<h2></h2>
          <img class="gallery-img" src="static/imgs/ai_ml_cv/Cabral_Sophia_Portfolio_ 20254.jpg" alt="CV 1">
-         <img class="gallery-img" src="static/imgs/ai_ml_cv/Cabral_Sophia_Portfolio_ 20255.jpg" alt="CV 2">
-         `
+         <img class="gallery-img" src="static/imgs/ai_ml_cv/Cabral_Sophia_Portfolio_ 20255.jpg" alt="CV 2">`
       );
       
       let acadBranch4 = new Node(
@@ -272,7 +262,6 @@
          <img class="gallery-img" src="static/imgs/computer_tools/Cabral_Sophia_Portfolio_ 202522.jpg" alt="Digital Tool 1">
          <img class="gallery-img" src="static/imgs/computer_tools/Cabral_Sophia_Portfolio_ 202523.jpg" alt="Digital Tool 1">
          <img class="gallery-img" src="static/imgs/computer_tools/Cabral_Sophia_Portfolio_ 202524.jpg" alt="Digital Tool 1">`
-
       );
       
       let acadBranch5 = new Node("Digital Fabrication", "http://acadia.org/news/NCXCRV", 2 * canvasWidth / 2.15, 350, academic);
@@ -344,6 +333,7 @@
       const rect = canvas.getBoundingClientRect();
       const x = e.touches[0].clientX - rect.left;
       const y = e.touches[0].clientY - rect.top;
+      touchStartPos = { x, y };
       
       // Check if we're touching a node
       for (let i = nodes.length - 1; i >= 0; i--) {
@@ -366,42 +356,36 @@
     
     function handleTouchEnd(e) {
       e.preventDefault();
-      
-      // Get the last touch position
       const canvas = document.querySelector('canvas');
       const rect = canvas.getBoundingClientRect();
+      const x = e.changedTouches[0].clientX - rect.left;
+      const y = e.changedTouches[0].clientY - rect.top;
       
-      // If we have touch information from changedTouches
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        const x = e.changedTouches[0].clientX - rect.left;
-        const y = e.changedTouches[0].clientY - rect.top;
-        
-        // Prevent multiple activations
-        const now = Date.now();
-        if (now - lastTouchTime < 300) {
-          selectedNode = null;
-          return;
-        }
-        lastTouchTime = now;
-        
-        // If we were dragging, don't treat as a click
-        if (selectedNode) {
-          selectedNode = null;
-          return;
-        }
-        
-        // Check if we're touching a node
+      const now = Date.now();
+      if (now - lastTouchTime < 300) {
+        selectedNode = null;
+        touchStartPos = null;
+        return;
+      }
+      lastTouchTime = now;
+      
+      // Determine if this was a tap (minimal movement)
+      const dragThreshold = 10; // pixels
+      if (touchStartPos && 
+          Math.abs(x - touchStartPos.x) < dragThreshold &&
+          Math.abs(y - touchStartPos.y) < dragThreshold) {
+        // It was a tap: check if a node is under the tap position and activate it
         for (let i = nodes.length - 1; i >= 0; i--) {
           if (nodes[i].isPointOver(x, y)) {
-            // Found a node at the touch position
             console.log("Touch ended on node: " + nodes[i].label);
             activateNode(nodes[i]);
-            return;
+            break;
           }
         }
       }
       
       selectedNode = null;
+      touchStartPos = null;
     }
     
     // Activate a node (open link or show gallery)
