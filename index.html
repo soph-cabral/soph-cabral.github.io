@@ -3,61 +3,211 @@ layout: layout
 title: "Scabral"
 ---
 
-<!-- .container is the main centered wrapper -->
-<div class="container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CinzaLua</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  <style>
+    body { margin: 0; padding: 0; }
+    /* Center the canvas in the browser window */
+    canvas { 
+      display: block; 
+      margin: 0 auto; 
+    }
+  </style>
+</head>
+<body>
+  <script>
+    let nodes = [];
+    let canvasWidth = 800;
+    let canvasHeight = 600;
+    let selectedNode = null;
+    let hoveredNode = null;
 
-    <!-- columns should be the immediate child of a .row -->
-    <div class="row">
-        <div class="twelve columns">
-            <h1>CINZA LUA</h1>
-            <p>Design-Build | Technology | Assembly</p>
-        </div>
-    </div>
+    // Node class to hold branch data and text box dimensions for wrapping
+    class Node {
+      constructor(label, link, x, y, parent = null, textBoxWidth = 150, textBoxHeight = 40) {
+        this.label = label;
+        this.link = link;
+        this.x = x;
+        this.y = y;
+        this.parent = parent;
+        this.children = [];
+        this.radius = 5; // Small circle for the node
+        this.textBoxWidth = textBoxWidth;
+        this.textBoxHeight = textBoxHeight;
+      }
+      
+      // Check if mouse is over this node
+      isMouseOver(mx, my) {
+        // Create a slightly larger hit area for easier selection
+        let hitRadius = this.radius + 40;
+        return dist(mx, my, this.x, this.y) < hitRadius;
+      }
+      
+      // Draw the node and its wrapped label
+      display() {
+        // Set up text wrapping and styling
+        textWrap(WORD);
+        textSize(16);
+        // Draw node point
+        if (this === hoveredNode) {
+          fill('red');
+        } else {
+          fill(200);
+        }
+        noStroke();
+        ellipse(this.x, this.y, this.radius * 2);
+        
+        // Draw label with wrapping: align text at the top center of the text box
+        textAlign(CENTER, TOP);
+        if (this === hoveredNode) {
+          fill('red');
+        } else {
+          fill(0);
+        }
+        text(this.label, this.x - this.textBoxWidth/2, this.y - 20, this.textBoxWidth, this.textBoxHeight);
+        
+        // Change cursor if hovering over the node
+        if (this === hoveredNode) {
+          cursor(HAND);
+        }
+      }
+    }
 
-    <p class="centered-paragraph">
-        Computational Design & Installations 
-    </p>
- 
-    <div class="model-viewer-container mx-auto" id="viewer">
-        <!-- For larger screens (computer) -->
-        <div class="model-viewer model">
-            <style>
-                .model-viewer.model {
-                    width: 600px;
-                    height: 600px;
-                    padding: 20px; /* Adjust the padding value according to your preference */
-                }
+    function setup() {
+      // Create the canvas and center it using CSS styling
+      createCanvas(canvasWidth, canvasHeight);
+      // Ensure words wrap in text boxes
+      textWrap(WORD);
+      
+      // Create the "Me" node with a long label that wraps,
+      // linking to "about.html"
+      let research = new Node(
+        "Me {researcher + digital tool maker [passionate about all things making]}",
+        "about.html",
+        canvasWidth / 2,
+        50,
+        null,
+        250, // textBoxWidth 
+        60   // textBoxHeight 
+      );
+      nodes.push(research);
+      
+      // First-level nodes: "Industry" and "Academic"
+      let industry = new Node("Industry", "https://www.example.com/industry", canvasWidth / 3, 200, research);
+      let academic = new Node("Academic", "https://www.example.com/academic", 2 * canvasWidth / 3, 200, research);
+      nodes.push(industry, academic);
+      research.children.push(industry, academic);
+      
+      // Example additional branches under Industry
+      let indBranch1 = new Node("Cinza Lua", "https://www.example.com/industry1", canvasWidth / 4, 440, industry);
+      let indBranch2 = new Node("FixAI", "https://www.example.com/industry2", canvasWidth / 2.75, 350, industry);
+      let indBranch3 = new Node("Industry Research", "https://www.example.com/industry2", canvasWidth / 5, 380, industry);
+      nodes.push(indBranch1, indBranch2, indBranch3);
+      industry.children.push(indBranch1, indBranch2, indBranch3);
+      
+      // Example additional branches under Academic
+      let acadBranch1 = new Node("Electronics", "https://www.example.com/academic1", 2 * canvasWidth / 3.5, 350, academic);
+      let acadBranch2 = new Node("Materials Engineering", "https://www.example.com/academic1", 2 * canvasWidth / 3.00, 400, academic);
+      let acadBranch3 = new Node("Computer Vision, ML, AI", "https://www.example.com/academic1", 2 * canvasWidth / 2.5, 480, academic);
+      let acadBranch4 = new Node("Digital Tools", "https://www.example.com/academic1", 2 * canvasWidth / 2.25, 380, academic);
+      let acadBranch5 = new Node("Robotics", "https://www.example.com/academic1", 2 * canvasWidth / 2.15, 350, academic);
+      nodes.push(acadBranch1, acadBranch2, acadBranch3, acadBranch4, acadBranch5);
+      academic.children.push(acadBranch1, acadBranch2, acadBranch3, acadBranch4, acadBranch5);
+    }
+
+    function draw() {
+      background(255);
+      cursor(ARROW); // Reset cursor
+      
+      // Draw Bézier curves between each parent and child node
+      stroke(150,150,150);
+      strokeWeight(1);
+      noFill();
+      
+      
+      nodes.forEach(child => {
+        if (child.parent) {
+          let startX = child.parent.x;
+          let startY = child.parent.y;
+          let endX = child.x;
+          let endY = child.y;
+          // Control points to shape the curve—adjust as needed.
+          let cp1X = startX;
+          let cp1Y = (startY + endY) / 2;
+          let cp2X = endX;
+          let cp2Y = (startY + endY) / 2;
+          bezier(startX, startY, cp1X, cp1Y, cp2X, cp2Y, endX, endY);
+        }
+      });
+      
+      // Check for hovering over nodes
+      hoveredNode = null;
+      for (let i = nodes.length - 1; i >= 0; i--) {
+        if (nodes[i].isMouseOver(mouseX, mouseY)) {
+          hoveredNode = nodes[i];
+          break;
+        }
+      }
+      
+      // Display all nodes
+      nodes.forEach(node => node.display());
+    }
     
-                /* Media query for smaller screens (mobile) */
-                @media only screen and (max-width: 600px) {
-                    .model-viewer.model {
-                        display: block; /* Show the photo on smaller screens */
-                        width: 100%;
-                        max-width: none;
-                        max-height: none;
-                        padding: 2px;
-                    }
-                }
-            </style>
+    // Mouse pressed handler for dragging
+    function mousePressed() {
+      for (let i = nodes.length - 1; i >= 0; i--) {
+        if (nodes[i].isMouseOver(mouseX, mouseY)) {
+          selectedNode = nodes[i];
+          return false; // Prevent default behavior
+        }
+      }
+      return false;
+    }
     
-            <model-viewer class="mod"
-                style="width: 100%; height: 100%; max-width: none; max-height: none;/"
-                src="{{ site.baseurl }}static/models/Flower_Purple"
-                ar ar-modes="scene-viewer webxr quick-look"
-                shadow-intensity="7" exposure="0.8"
-                camera-orbit="-1.2deg 90deg auto" environment-image="neutral" auto-rotate
-                rotation-per-second="10deg">
-                <!-- Navigation buttons or other content can be placed here -->
-            </model-viewer>
-        </div>
-
-    </div>
-   
- 
+    // Mouse dragged handler for moving nodes
+    function mouseDragged() {
+      if (selectedNode) {
+        selectedNode.x = mouseX;
+        selectedNode.y = mouseY;
+      }
+      return false;
+    }
     
-
-    <button class="btn btn-light"><a href="/cinzalua" class="btn btn-light">Professional Work</a></button>
-    <button class="btn btn-light"><a href="/academic_2.html" class="btn btn-light">Personal/Academic Work</a></button>
-
-
-</div>
+    // Mouse released handler resets selection
+    function mouseReleased() {
+      selectedNode = null;
+      return false;
+    }
+    
+    // New mouseClicked handler opens the link of the hovered node
+    function mouseClicked() {
+      if (hoveredNode) {
+        // Navigate to the link. You can use window.location.href for same-window navigation.
+        window.location.href = hoveredNode.link;
+      }
+      return false;
+    }
+    
+    // Example function for adding a branch dynamically.
+    function addBranch(parentNode, label, link, offsetX = 0, offsetY = 150) {
+      let newX = parentNode.x + offsetX;
+      let newY = parentNode.y + offsetY;
+      let newNode = new Node(label, link, newX, newY, parentNode);
+      nodes.push(newNode);
+      parentNode.children.push(newNode);
+    }
+    
+    // Optional: double-click handler if needed
+    function doubleClicked() {
+      if (hoveredNode) {
+        window.location.href = hoveredNode.link;
+        return false;
+      }
+    }
+  </script>
+</body>
+</html>

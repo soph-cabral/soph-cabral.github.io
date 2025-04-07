@@ -1,0 +1,63 @@
+---
+layout: layout
+title: "Scabral"
+---
+
+<!-- .container is the main centered wrapper -->
+<div class="container">
+
+    <!-- columns should be the immediate child of a .row -->
+    <div class="row">
+        <div class="twelve columns">
+            <h1>CINZA LUA</h1>
+            <p>Design-Build | Technology | Assembly</p>
+        </div>
+    </div>
+
+    <p class="centered-paragraph">
+        Computational Design & Installations 
+    </p>
+ 
+    <div class="model-viewer-container mx-auto" id="viewer">
+        <!-- For larger screens (computer) -->
+        <div class="model-viewer model">
+            <style>
+                .model-viewer.model {
+                    width: 600px;
+                    height: 600px;
+                    padding: 20px; /* Adjust the padding value according to your preference */
+                }
+    
+                /* Media query for smaller screens (mobile) */
+                @media only screen and (max-width: 600px) {
+                    .model-viewer.model {
+                        display: block; /* Show the photo on smaller screens */
+                        width: 100%;
+                        max-width: none;
+                        max-height: none;
+                        padding: 2px;
+                    }
+                }
+            </style>
+    
+            <model-viewer class="mod"
+                style="width: 100%; height: 100%; max-width: none; max-height: none;/"
+                src="{{ site.baseurl }}static/models/Flower_Purple"
+                ar ar-modes="scene-viewer webxr quick-look"
+                shadow-intensity="7" exposure="0.8"
+                camera-orbit="-1.2deg 90deg auto" environment-image="neutral" auto-rotate
+                rotation-per-second="10deg">
+                <!-- Navigation buttons or other content can be placed here -->
+            </model-viewer>
+        </div>
+
+    </div>
+   
+ 
+    
+
+    <button class="btn btn-light"><a href="/cinzalua" class="btn btn-light">Professional Work</a></button>
+    <button class="btn btn-light"><a href="/academic_2.html" class="btn btn-light">Personal/Academic Work</a></button>
+
+
+</div>
