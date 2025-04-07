@@ -12,11 +12,16 @@ title: "Scabral"
   <title>CinzaLua</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
   <style>
-    body { margin: 0; padding: 0; }
+    body { 
+      margin: 0; 
+      padding: 0; 
+      touch-action: none; /* Prevent browser handling of touch gestures */
+    }
     /* Center the canvas in the browser window */
     canvas { 
       display: block; 
       margin: 0 auto; 
+      touch-action: none; /* Prevent browser handling of touch gestures */
     }
     /* Modal (popup gallery) styles */
     .modal {
@@ -45,6 +50,7 @@ title: "Scabral"
       font-size: 28px;
       font-weight: bold;
       cursor: pointer;
+      padding: 10px; /* Larger touch target for close button */
     }
     .close:hover,
     .close:focus {
@@ -77,6 +83,14 @@ title: "Scabral"
     let canvasHeight = Math.min(window.innerHeight, 600);
     let selectedNode = null;
     let hoveredNode = null;
+    let lastTouchTime = 0; // Track last touch to prevent double processing
+    let isTouchDevice = false;
+
+    // Detect if we're on a touch device as early as possible
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      isTouchDevice = true;
+      console.log("Touch device detected");
+    }
 
     // Node class to hold branch data plus an optional gallery
     class Node {
@@ -91,13 +105,15 @@ title: "Scabral"
         this.textBoxWidth = textBoxWidth;
         this.textBoxHeight = textBoxHeight;
         this.galleryContent = galleryContent; // Optional HTML string for a gallery
-        this.touchRadius = 40; // Larger hit area for mobile touches
+        this.touchRadius = 60; // Increased size for more reliable mobile touches
       }
       
-      // Check if mouse/touch is over this node
-      isMouseOver(mx, my) {
-        // Create a larger hit area specifically for easier selection on mobile
-        return dist(mx, my, this.x, this.y) < this.touchRadius;
+      // Check if coordinates are over this node
+      isPointOver(x, y) {
+        if (typeof x === 'undefined' || typeof y === 'undefined') {
+          return false;
+        }
+        return dist(x, y, this.x, this.y) < this.touchRadius;
       }
       
       // Draw the node and its wrapped label
@@ -111,6 +127,21 @@ title: "Scabral"
           fill(200);
         }
         noStroke();
+        // Draw a larger visible circle for nodes on touch devices
+        if (isTouchDevice) {
+          // Draw touch target indicator for debugging
+          noFill();
+          stroke(200, 200, 200, 100);
+          ellipse(this.x, this.y, this.touchRadius * 2);
+          
+          // Draw the actual node
+          noStroke();
+          if (this === hoveredNode) {
+            fill('red');
+          } else {
+            fill(200);
+          }
+        }
         ellipse(this.x, this.y, this.radius * 2);
         
         // Draw the label with wrapping (centered above the node)
@@ -213,6 +244,12 @@ title: "Scabral"
       let acadBranch5 = new Node("Digital Fabrication", "http://acadia.org/news/NCXCRV", 2 * canvasWidth / 2.15, 350, academic);
       nodes.push(acadBranch1, acadBranch2, acadBranch3, acadBranch4, acadBranch5);
       academic.children.push(acadBranch1, acadBranch2, acadBranch3, acadBranch4, acadBranch5);
+      
+      // Add canvas touch event listeners directly
+      let canvas = document.querySelector('canvas');
+      canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+      canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+      canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
     }
 
     function draw() {
@@ -237,98 +274,145 @@ title: "Scabral"
         }
       });
       
-      // Check for hovering over nodes (works for both mouse and touch)
+      // Update hovered node
+      updateHoveredNode();
+      
+      // Draw all nodes
+      nodes.forEach(node => node.display());
+    }
+    
+    // Helper for getting touch or mouse coordinates
+    function getInputPosition() {
+      if (isTouchDevice && touches.length > 0) {
+        return { x: touches[0].x, y: touches[0].y };
+      } else {
+        return { x: mouseX, y: mouseY };
+      }
+    }
+    
+    // Update which node is being hovered over
+    function updateHoveredNode() {
       hoveredNode = null;
-      const checkX = touches[0]?.x || mouseX;
-      const checkY = touches[0]?.y || mouseY;
+      const pos = getInputPosition();
       
       for (let i = nodes.length - 1; i >= 0; i--) {
-        if (nodes[i].isMouseOver(checkX, checkY)) {
+        if (nodes[i].isPointOver(pos.x, pos.y)) {
           hoveredNode = nodes[i];
           break;
         }
       }
-      
-      nodes.forEach(node => node.display());
     }
     
-    // Mouse pressed for dragging nodes
-    function mousePressed() {
+    // Direct DOM touch handlers (more reliable than p5.js touch functions)
+    function handleTouchStart(e) {
+      e.preventDefault();
+      const canvas = document.querySelector('canvas');
+      const rect = canvas.getBoundingClientRect();
+      const x = e.touches[0].clientX - rect.left;
+      const y = e.touches[0].clientY - rect.top;
+      
+      // Check if we're touching a node
       for (let i = nodes.length - 1; i >= 0; i--) {
-        if (nodes[i].isMouseOver(mouseX, mouseY)) {
+        if (nodes[i].isPointOver(x, y)) {
           selectedNode = nodes[i];
-          return false;
+          break;
+        }
+      }
+    }
+    
+    function handleTouchMove(e) {
+      e.preventDefault();
+      if (selectedNode) {
+        const canvas = document.querySelector('canvas');
+        const rect = canvas.getBoundingClientRect();
+        selectedNode.x = e.touches[0].clientX - rect.left;
+        selectedNode.y = e.touches[0].clientY - rect.top;
+      }
+    }
+    
+    function handleTouchEnd(e) {
+      e.preventDefault();
+      
+      // Get the last touch position
+      const canvas = document.querySelector('canvas');
+      const rect = canvas.getBoundingClientRect();
+      
+      // If we have touch information from changedTouches
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        const x = e.changedTouches[0].clientX - rect.left;
+        const y = e.changedTouches[0].clientY - rect.top;
+        
+        // Prevent multiple activations
+        const now = Date.now();
+        if (now - lastTouchTime < 300) {
+          selectedNode = null;
+          return;
+        }
+        lastTouchTime = now;
+        
+        // If we were dragging, don't treat as a click
+        if (selectedNode) {
+          selectedNode = null;
+          return;
+        }
+        
+        // Check if we're touching a node
+        for (let i = nodes.length - 1; i >= 0; i--) {
+          if (nodes[i].isPointOver(x, y)) {
+            // Found a node at the touch position
+            console.log("Touch ended on node: " + nodes[i].label);
+            activateNode(nodes[i]);
+            return;
+          }
+        }
+      }
+      
+      selectedNode = null;
+    }
+    
+    // Activate a node (open link or show gallery)
+    function activateNode(node) {
+      if (node) {
+        if (node.galleryContent) {
+          openGalleryModal(node.galleryContent);
+        } else if (node.link) {
+          console.log("Navigating to: " + node.link);
+          window.location.href = node.link;
+        }
+      }
+    }
+    
+    // Mouse events - use only on non-touch devices
+    function mousePressed() {
+      if (!isTouchDevice) {
+        for (let i = nodes.length - 1; i >= 0; i--) {
+          if (nodes[i].isPointOver(mouseX, mouseY)) {
+            selectedNode = nodes[i];
+            return false;
+          }
         }
       }
       return false;
     }
     
-    // Mouse dragged for moving nodes
     function mouseDragged() {
-      if (selectedNode) {
+      if (!isTouchDevice && selectedNode) {
         selectedNode.x = mouseX;
         selectedNode.y = mouseY;
       }
       return false;
     }
     
-    // Mouse released resets selection
     function mouseReleased() {
-      selectedNode = null;
-      return false;
-    }
-    
-    // Mouse clicked: if node has galleryContent, show modal; else, navigate
-    function mouseClicked() {
-      // Only proceed if we're not on a touch device
-      if (navigator.maxTouchPoints === 0) {
-        if (hoveredNode) {
-          if (hoveredNode.galleryContent) {
-            openGalleryModal(hoveredNode.galleryContent);
-          } else {
-            window.location.href = hoveredNode.link;
-          }
-        }
-      }
-      return false; // Prevent default behavior
-    }
-    
-    // Touch event handlers for mobile
-    function touchStarted() {
-      for (let i = nodes.length - 1; i >= 0; i--) {
-        if (nodes[i].isMouseOver(touches[0]?.x || mouseX, touches[0]?.y || mouseY)) {
-          selectedNode = nodes[i];
-          return false; // Prevent default behavior
-        }
-      }
-      return false;
-    }
-    
-    function touchMoved() {
-      if (selectedNode) {
-        selectedNode.x = touches[0]?.x || mouseX;
-        selectedNode.y = touches[0]?.y || mouseY;
-      }
-      return false; // Prevent default behavior
-    }
-    
-    function touchEnded() {
-      if (selectedNode) {
-        // We were dragging a node, not clicking
+      if (!isTouchDevice) {
         selectedNode = null;
-        return false;
       }
-      
-      // Check if we're touching a node
-      for (let i = nodes.length - 1; i >= 0; i--) {
-        if (nodes[i].isMouseOver(touches[0]?.x || mouseX, touches[0]?.y || mouseY)) {
-          if (nodes[i].galleryContent) {
-            openGalleryModal(nodes[i].galleryContent);
-          } else {
-            window.location.href = nodes[i].link;
-          }
-          return false; // Prevent default behavior
-        }
+      return false;
+    }
+    
+    function mouseClicked() {
+      if (!isTouchDevice && hoveredNode) {
+        activateNode(hoveredNode);
       }
       return false;
     }
@@ -342,6 +426,7 @@ title: "Scabral"
     
     // Modal gallery functions
     function openGalleryModal(content) {
+      console.log("Opening gallery modal");
       let modal = document.getElementById("galleryModal");
       document.getElementById("galleryContent").innerHTML = content;
       modal.style.display = "block";
@@ -355,12 +440,26 @@ title: "Scabral"
     // Set up event listeners for the modal close
     document.addEventListener("DOMContentLoaded", function() {
       document.getElementById("closeModal").addEventListener("click", closeGalleryModal);
-      window.addEventListener("click", function(event) {
-        let modal = document.getElementById("galleryModal");
+      
+      // Close modal on touch outside content area
+      let modal = document.getElementById("galleryModal");
+      modal.addEventListener("touchend", function(event) {
         if (event.target === modal) {
           closeGalleryModal();
         }
       });
+      
+      // Close modal on click outside content area
+      window.addEventListener("click", function(event) {
+        if (event.target === modal) {
+          closeGalleryModal();
+        }
+      });
+      
+      // Debug info for touch events
+      if (isTouchDevice) {
+        console.log("Touch device detected in DOMContentLoaded");
+      }
     });
   </script>
 </body>
