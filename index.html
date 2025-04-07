@@ -7,6 +7,8 @@ title: "Scabral"
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Viewport meta tag for mobile responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CinzaLua</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
   <style>
@@ -21,8 +23,9 @@ title: "Scabral"
 <body>
   <script>
     let nodes = [];
-    let canvasWidth = 800;
-    let canvasHeight = 600;
+    // Use dynamic canvas sizes with maximum dimensions for larger screens.
+    let canvasWidth = Math.min(window.innerWidth, 800);
+    let canvasHeight = Math.min(window.innerHeight, 600);
     let selectedNode = null;
     let hoveredNode = null;
 
@@ -49,10 +52,9 @@ title: "Scabral"
       
       // Draw the node and its wrapped label
       display() {
-        // Set up text wrapping and styling
         textWrap(WORD);
         textSize(16);
-        // Draw node point
+        // Draw node point with red fill on hover
         if (this === hoveredNode) {
           fill('red');
         } else {
@@ -61,7 +63,7 @@ title: "Scabral"
         noStroke();
         ellipse(this.x, this.y, this.radius * 2);
         
-        // Draw label with wrapping: align text at the top center of the text box
+        // Draw the label with wrapping (centered above the node)
         textAlign(CENTER, TOP);
         if (this === hoveredNode) {
           fill('red');
@@ -78,21 +80,18 @@ title: "Scabral"
     }
 
     function setup() {
-      // Create the canvas and center it using CSS styling
       createCanvas(canvasWidth, canvasHeight);
-      // Ensure words wrap in text boxes
       textWrap(WORD);
       
-      // Create the "Me" node with a long label that wraps,
-      // linking to "about.html"
+      // Create the "Me" node with a long, wrapped label linking to "about.html"
       let research = new Node(
-        "Me {researcher + digital tool maker [passionate about all things making]}",
+        "Me, a researcher, digital tool maker, and passionate about all things making.",
         "about.html",
         canvasWidth / 2,
         50,
         null,
-        250, // textBoxWidth 
-        60   // textBoxHeight 
+        250, // textBoxWidth
+        60   // textBoxHeight
       );
       nodes.push(research);
       
@@ -124,18 +123,16 @@ title: "Scabral"
       cursor(ARROW); // Reset cursor
       
       // Draw Bézier curves between each parent and child node
-      stroke(150,150,150);
+      stroke(0);
       strokeWeight(1);
       noFill();
-      
-      
       nodes.forEach(child => {
         if (child.parent) {
           let startX = child.parent.x;
           let startY = child.parent.y;
           let endX = child.x;
           let endY = child.y;
-          // Control points to shape the curve—adjust as needed.
+          // Control points for a smooth curve
           let cp1X = startX;
           let cp1Y = (startY + endY) / 2;
           let cp2X = endX;
@@ -157,18 +154,18 @@ title: "Scabral"
       nodes.forEach(node => node.display());
     }
     
-    // Mouse pressed handler for dragging
+    // Mouse pressed for dragging nodes
     function mousePressed() {
       for (let i = nodes.length - 1; i >= 0; i--) {
         if (nodes[i].isMouseOver(mouseX, mouseY)) {
           selectedNode = nodes[i];
-          return false; // Prevent default behavior
+          return false;
         }
       }
       return false;
     }
     
-    // Mouse dragged handler for moving nodes
+    // Mouse dragged for moving nodes
     function mouseDragged() {
       if (selectedNode) {
         selectedNode.x = mouseX;
@@ -177,36 +174,26 @@ title: "Scabral"
       return false;
     }
     
-    // Mouse released handler resets selection
+    // Mouse released resets selection
     function mouseReleased() {
       selectedNode = null;
       return false;
     }
     
-    // New mouseClicked handler opens the link of the hovered node
+    // Mouse clicked navigates to the link of the hovered node
     function mouseClicked() {
       if (hoveredNode) {
-        // Navigate to the link. You can use window.location.href for same-window navigation.
+        // Navigate to the node's link
         window.location.href = hoveredNode.link;
       }
       return false;
     }
     
-    // Example function for adding a branch dynamically.
-    function addBranch(parentNode, label, link, offsetX = 0, offsetY = 150) {
-      let newX = parentNode.x + offsetX;
-      let newY = parentNode.y + offsetY;
-      let newNode = new Node(label, link, newX, newY, parentNode);
-      nodes.push(newNode);
-      parentNode.children.push(newNode);
-    }
-    
-    // Optional: double-click handler if needed
-    function doubleClicked() {
-      if (hoveredNode) {
-        window.location.href = hoveredNode.link;
-        return false;
-      }
+    // Responsive canvas: adjust size on window resize
+    function windowResized() {
+      canvasWidth = Math.min(window.innerWidth, 800);
+      canvasHeight = Math.min(window.innerHeight, 600);
+      resizeCanvas(canvasWidth, canvasHeight);
     }
   </script>
 </body>
