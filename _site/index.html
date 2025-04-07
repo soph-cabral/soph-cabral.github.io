@@ -125,13 +125,13 @@
         this.textBoxWidth = textBoxWidth;
         this.textBoxHeight = textBoxHeight;
         this.galleryContent = galleryContent; // Optional HTML string for a gallery
+        this.touchRadius = 40; // Larger hit area for mobile touches
       }
       
-      // Check if mouse is over this node
+      // Check if mouse/touch is over this node
       isMouseOver(mx, my) {
-        // Create a slightly larger hit area for easier selection
-        let hitRadius = this.radius + 40;
-        return dist(mx, my, this.x, this.y) < hitRadius;
+        // Create a larger hit area specifically for easier selection on mobile
+        return dist(mx, my, this.x, this.y) < this.touchRadius;
       }
       
       // Draw the node and its wrapped label
@@ -271,10 +271,13 @@
         }
       });
       
-      // Check for hovering over nodes
+      // Check for hovering over nodes (works for both mouse and touch)
       hoveredNode = null;
+      const checkX = touches[0]?.x || mouseX;
+      const checkY = touches[0]?.y || mouseY;
+      
       for (let i = nodes.length - 1; i >= 0; i--) {
-        if (nodes[i].isMouseOver(mouseX, mouseY)) {
+        if (nodes[i].isMouseOver(checkX, checkY)) {
           hoveredNode = nodes[i];
           break;
         }
@@ -311,11 +314,54 @@
     
     // Mouse clicked: if node has galleryContent, show modal; else, navigate
     function mouseClicked() {
-      if (hoveredNode) {
-        if (hoveredNode.galleryContent) {
-          openGalleryModal(hoveredNode.galleryContent);
-        } else {
-          window.location.href = hoveredNode.link;
+      // Only proceed if we're not on a touch device
+      if (navigator.maxTouchPoints === 0) {
+        if (hoveredNode) {
+          if (hoveredNode.galleryContent) {
+            openGalleryModal(hoveredNode.galleryContent);
+          } else {
+            window.location.href = hoveredNode.link;
+          }
+        }
+      }
+      return false; // Prevent default behavior
+    }
+    
+    // Touch event handlers for mobile
+    function touchStarted() {
+      for (let i = nodes.length - 1; i >= 0; i--) {
+        if (nodes[i].isMouseOver(touches[0]?.x || mouseX, touches[0]?.y || mouseY)) {
+          selectedNode = nodes[i];
+          return false; // Prevent default behavior
+        }
+      }
+      return false;
+    }
+    
+    function touchMoved() {
+      if (selectedNode) {
+        selectedNode.x = touches[0]?.x || mouseX;
+        selectedNode.y = touches[0]?.y || mouseY;
+      }
+      return false; // Prevent default behavior
+    }
+    
+    function touchEnded() {
+      if (selectedNode) {
+        // We were dragging a node, not clicking
+        selectedNode = null;
+        return false;
+      }
+      
+      // Check if we're touching a node
+      for (let i = nodes.length - 1; i >= 0; i--) {
+        if (nodes[i].isMouseOver(touches[0]?.x || mouseX, touches[0]?.y || mouseY)) {
+          if (nodes[i].galleryContent) {
+            openGalleryModal(nodes[i].galleryContent);
+          } else {
+            window.location.href = nodes[i].link;
+          }
+          return false; // Prevent default behavior
         }
       }
       return false;
@@ -353,7 +399,6 @@
   </script>
 </body>
 </html>
-
     
 
     <!-- Include Bootstrap JS -->
