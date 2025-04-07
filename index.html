@@ -18,9 +18,58 @@ title: "Scabral"
       display: block; 
       margin: 0 auto; 
     }
+    /* Modal (popup gallery) styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      margin-right: 30px;
+      text-decoration: none;
+    }
+    /* Gallery image styling */
+    .gallery-img {
+      max-width: 100%;
+      margin: 10px 0;
+    }
   </style>
 </head>
 <body>
+  <!-- Modal Popup for Gallery -->
+  <div id="galleryModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <div id="galleryContent">
+        <!-- Gallery content will be injected here -->
+      </div>
+    </div>
+  </div>
+  
   <script>
     let nodes = [];
     // Use dynamic canvas sizes with maximum dimensions for larger screens.
@@ -29,9 +78,9 @@ title: "Scabral"
     let selectedNode = null;
     let hoveredNode = null;
 
-    // Node class to hold branch data and text box dimensions for wrapping
+    // Node class to hold branch data plus an optional gallery
     class Node {
-      constructor(label, link, x, y, parent = null, textBoxWidth = 150, textBoxHeight = 40) {
+      constructor(label, link, x, y, parent = null, textBoxWidth = 150, textBoxHeight = 40, galleryContent = null) {
         this.label = label;
         this.link = link;
         this.x = x;
@@ -41,6 +90,7 @@ title: "Scabral"
         this.radius = 5; // Small circle for the node
         this.textBoxWidth = textBoxWidth;
         this.textBoxHeight = textBoxHeight;
+        this.galleryContent = galleryContent; // Optional HTML string for a gallery
       }
       
       // Check if mouse is over this node
@@ -90,37 +140,84 @@ title: "Scabral"
         canvasWidth / 2,
         50,
         null,
-        250, // textBoxWidth
-        60   // textBoxHeight
+        250,
+        60
       );
       nodes.push(research);
       
       // First-level nodes: "Industry" and "Academic"
-      let industry = new Node("Industry", "https://www.example.com/industry", canvasWidth / 3, 200, research);
-      let academic = new Node("Academic", "https://www.example.com/academic", 2 * canvasWidth / 3, 200, research);
+      let industry = new Node("Industry", "cinzalua.html", canvasWidth / 3, 200, research);
+      let academic = new Node("Academic", "academic_2.html", 2 * canvasWidth / 3, 200, research);
       nodes.push(industry, academic);
       research.children.push(industry, academic);
       
       // Example additional branches under Industry
-      let indBranch1 = new Node("Cinza Lua", "https://www.example.com/industry1", canvasWidth / 4, 440, industry);
-      let indBranch2 = new Node("FixAI", "https://www.example.com/industry2", canvasWidth / 2.75, 350, industry);
-      let indBranch3 = new Node("Industry Research", "https://www.example.com/industry2", canvasWidth / 5, 380, industry);
+      let indBranch1 = new Node("Cinza Lua", "cinzalua.html", canvasWidth / 4, 440, industry);
+      let indBranch2 = new Node("FixAI", "https://www.fixai.tech/", canvasWidth / 2.75, 350, industry);
+      let indBranch3 = new Node("Industry Research", "https://www.research.autodesk.com/blog/from-walls-to-resources-early-results-in-ai-powered-building-deconstruction-planning/", canvasWidth / 5, 380, industry);
       nodes.push(indBranch1, indBranch2, indBranch3);
       industry.children.push(indBranch1, indBranch2, indBranch3);
       
-      // Example additional branches under Academic
-      let acadBranch1 = new Node("Electronics", "https://www.example.com/academic1", 2 * canvasWidth / 3.5, 350, academic);
-      let acadBranch2 = new Node("Materials Engineering", "https://www.example.com/academic1", 2 * canvasWidth / 3.00, 400, academic);
-      let acadBranch3 = new Node("Computer Vision, ML, AI", "https://www.example.com/academic1", 2 * canvasWidth / 2.5, 480, academic);
-      let acadBranch4 = new Node("Digital Tools", "https://www.example.com/academic1", 2 * canvasWidth / 2.25, 380, academic);
-      let acadBranch5 = new Node("Robotics", "https://www.example.com/academic1", 2 * canvasWidth / 2.15, 350, academic);
+      // Example additional branches under Academic with different gallery content
+      let acadBranch1 = new Node("Electronics", "https://www.cinzalua.com/ps70/", 2 * canvasWidth / 3.5, 350, academic);
+      
+      // This node will display a gallery when clicked
+      let acadBranch2 = new Node(
+        "Materials Engineering", 
+        "https://www.example.com/academic1", 
+        2 * canvasWidth / 3.00, 
+        400, 
+        academic,
+        150,
+        40,
+        `<h2></h2>
+         <img class="gallery-img" src="static/imgs/materials/Cabral_Sophia_Portfolio_ 20256.jpg" alt="Materials 1">
+         <img class="gallery-img" src="static/imgs/materials/samples6.jpg" alt="Materials 2">`
+      );
+      
+      let acadBranch3 = new Node(
+        "Computer Vision, ML, AI", 
+        "https://www.example.com/academic1", 
+        2 * canvasWidth / 2.5, 
+        480, 
+        academic,
+        150,
+        40,
+        `<h2></h2>
+         <img class="gallery-img" src="static/imgs/ai_ml_cv/Cabral_Sophia_Portfolio_ 20254.jpg" alt="CV 1">
+         <img class="gallery-img" src="static/imgs/ai_ml_cv/Cabral_Sophia_Portfolio_ 20255.jpg" alt="CV 2">
+         `
+      );
+      
+      let acadBranch4 = new Node(
+        "Digital Tools", 
+        "https://www.example.com/academic1", 
+        2 * canvasWidth / 2.25, 
+        380, 
+        academic,
+        150,
+        40,
+        `<p></p>
+         <img class="gallery-img" src="static/imgs/computer_tools/Cabral_Sophia_Portfolio_ 20257.jpg" alt="Digital Tool 1">
+         <img class="gallery-img" src="static/imgs/computer_tools/Cabral_Sophia_Portfolio_ 20258.jpg" alt="Digital Tool 1">
+         <img class="gallery-img" src="static/imgs/computer_tools/Cabral_Sophia_Portfolio_ 20259.jpg" alt="Digital Tool 1">
+         <img class="gallery-img" src="static/imgs/computer_tools/Cabral_Sophia_Portfolio_ 202510.jpg" alt="Digital Tool 1">
+         <img class="gallery-img" src="static/imgs/computer_tools/Cabral_Sophia_Portfolio_ 202511.jpg" alt="Digital Tool 1">
+         <img class="gallery-img" src="static/imgs/computer_tools/Cabral_Sophia_Portfolio_ 202521.jpg" alt="Digital Tool 1">
+         <img class="gallery-img" src="static/imgs/computer_tools/Cabral_Sophia_Portfolio_ 202522.jpg" alt="Digital Tool 1">
+         <img class="gallery-img" src="static/imgs/computer_tools/Cabral_Sophia_Portfolio_ 202523.jpg" alt="Digital Tool 1">
+         <img class="gallery-img" src="static/imgs/computer_tools/Cabral_Sophia_Portfolio_ 202524.jpg" alt="Digital Tool 1">`
+
+      );
+      
+      let acadBranch5 = new Node("Digital Fabrication", "http://acadia.org/news/NCXCRV", 2 * canvasWidth / 2.15, 350, academic);
       nodes.push(acadBranch1, acadBranch2, acadBranch3, acadBranch4, acadBranch5);
       academic.children.push(acadBranch1, acadBranch2, acadBranch3, acadBranch4, acadBranch5);
     }
 
     function draw() {
       background(255);
-      cursor(ARROW); // Reset cursor
+      cursor(ARROW);
       
       // Draw Bézier curves between each parent and child node
       stroke(0);
@@ -132,7 +229,6 @@ title: "Scabral"
           let startY = child.parent.y;
           let endX = child.x;
           let endY = child.y;
-          // Control points for a smooth curve
           let cp1X = startX;
           let cp1Y = (startY + endY) / 2;
           let cp2X = endX;
@@ -150,7 +246,6 @@ title: "Scabral"
         }
       }
       
-      // Display all nodes
       nodes.forEach(node => node.display());
     }
     
@@ -180,11 +275,14 @@ title: "Scabral"
       return false;
     }
     
-    // Mouse clicked navigates to the link of the hovered node
+    // Mouse clicked: if node has galleryContent, show modal; else, navigate
     function mouseClicked() {
       if (hoveredNode) {
-        // Navigate to the node's link
-        window.location.href = hoveredNode.link;
+        if (hoveredNode.galleryContent) {
+          openGalleryModal(hoveredNode.galleryContent);
+        } else {
+          window.location.href = hoveredNode.link;
+        }
       }
       return false;
     }
@@ -195,6 +293,29 @@ title: "Scabral"
       canvasHeight = Math.min(window.innerHeight, 600);
       resizeCanvas(canvasWidth, canvasHeight);
     }
+    
+    // Modal gallery functions
+    function openGalleryModal(content) {
+      let modal = document.getElementById("galleryModal");
+      document.getElementById("galleryContent").innerHTML = content;
+      modal.style.display = "block";
+    }
+    
+    function closeGalleryModal() {
+      let modal = document.getElementById("galleryModal");
+      modal.style.display = "none";
+    }
+    
+    // Set up event listeners for the modal close
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("closeModal").addEventListener("click", closeGalleryModal);
+      window.addEventListener("click", function(event) {
+        let modal = document.getElementById("galleryModal");
+        if (event.target === modal) {
+          closeGalleryModal();
+        }
+      });
+    });
   </script>
 </body>
 </html>
