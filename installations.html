@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, width=device-width">
+  <link rel="icon" type="image/png" href="static/imgs/favicon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/css/lightbox.min.css">
+  <link href="static/styles.css" rel="stylesheet">
+  <link href="static/skeleton/normalize.css" rel="stylesheet">
+  <link href="static/skeleton/skeleton.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+  <link href="static/site.css?v=1795332117" rel="stylesheet">
+  <title>Installations</title>
+</head>
+<body class="work">
+  <nav class="navbar navbar-light">
+    <div class="container-fluid">
+      <div class="navbar-brand-box">
+        <a href="index.html"><img class="navbar-brand-img" src="static/imgs/flowe4-03.png" alt="Home"></a>
+      </div>
+      <ul class="navbar-nav ms-auto mt-2 d-flex flex-row">
+        <li class="nav-item me-5"><a class="nav-link" href="index.html">Work</a></li>
+        <li class="nav-item me-5"><a class="nav-link name" href="about.html">Sophia Cabral</a></li>
+      </ul>
+    </div>
+  </nav>
+<div class="work-wrap">
+  <div class="work-intro"><p class="crumb"><a href="index.html">&larr; Work</a></p><h1>Installations.</h1><div class="rule"></div><p>Installations that combine technology, digital fabrication, and story-telling, made with CinzaLua Studio in Miami.</p><p><a href="https://vizcaya.org/cap/kitchen/">Vizcaya press &rarr;</a></p></div>
+  <div class="tiles"><div class="tcol tcol-left"><div class="tile-spacer"></div><div class="tile" style="order:2" id="wall-pieces"><div class="tile-label"><p class="tile-desc">ECHO Brickell, Miami, 2023. 72 custom wood pieces, digitally designed, CNC milled and hand finished. </p><span class="tile-title">Digital fabricated wall pieces</span></div><div class="tile-img"><div class="slideshow"><img src="static/imgs/slides/wall-1.jpg" alt="" class=on><img src="static/imgs/slides/wall-2.jpg" alt=""><img src="static/imgs/slides/wall-3.jpg" alt=""><img src="static/imgs/slides/wall-4.jpg" alt=""><img src="static/imgs/slides/wall-5.jpg" alt=""><img src="static/imgs/slides/wall-6.jpg" alt=""></div></div></div><div class="tile" style="order:4" id="stopmotion"><div class="tile-label"><p class="tile-desc">The Kitchen, a stop-motion film made with the community. It won Best Animation at the Subculture film festival. <a class="tile-more" href="thekitchin.html">More &rarr;</a></p><span class="tile-title">Stop motion</span></div><div class="tile-img"><img src="static/imgs/set/2_mod.png" alt=""></div></div></div><div class="tcol tcol-right"><div class="tile" style="order:1" id="mural"><div class="tile-label"><p class="tile-desc">ECHO Brickell, Miami, 2023. A 1,200 sq ft permanent wall of digitally designed and fabricated concrete tiles with a hand-painted mural. </p><span class="tile-title">Mural</span></div><div class="tile-img"><div class="slideshow"><img src="static/imgs/slides/mural-1.jpg" alt="" class=on><img src="static/imgs/slides/mural-2.jpg" alt=""><img src="static/imgs/slides/mural-3.jpg" alt=""><img src="static/imgs/slides/mural-4.jpg" alt=""><img src="static/imgs/slides/mural-5.jpg" alt=""><img src="static/imgs/slides/mural-6.jpg" alt=""><img src="static/imgs/slides/mural-7.jpg" alt=""><img src="static/imgs/slides/mural-8.jpg" alt=""><img src="static/imgs/slides/mural-9.jpg" alt=""></div></div></div><div class="tile" style="order:3" id="vizcaya"><div class="tile-label"><p class="tile-desc">Vizcaya Museum kitchen, Miami, 2023. A copper armature with eight digital windows to the past, handcrafted animations and music by a Miami string quartet. On view for four months. <a class="tile-more" href="copperinst.html">More &rarr;</a></p><span class="tile-title">Vizcaya: Virtual Windows to the Past</span></div><div class="tile-img"><iframe class="tile-video" src="https://www.youtube.com/embed/E60L60zbhEo?autoplay=1&mute=1&loop=1&playlist=E60L60zbhEo&playsinline=1&rel=0&modestbranding=1" title="Vizcaya: Virtual Windows to the Past" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div></div></div></div>
+</div><script>
+document.querySelectorAll('.slideshow').forEach(function (box, n) {
+  var imgs = box.querySelectorAll('img'); if (imgs.length < 2) return;
+  var i = 0; setTimeout(function () { setInterval(function () {
+    imgs[i].classList.remove('on'); i = (i + 1) % imgs.length; imgs[i].classList.add('on');
+  }, 3200); }, n * 900);
+});
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
